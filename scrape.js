@@ -4,11 +4,8 @@ let fs = require('fs')
 let cheerio = require('cheerio');
 let url = 'https://www.imdb.com/search/name?birth_monthday='
 let people = []
-let out = {}
-//out = { people: people }
-//get people array out of it
-//make another function that loops through for each person's url
-//after get birthday people run console.log(people)
+
+
 function getBirthDayPeople(birthMonth, birthDay, positionStart){
   request(url + birthMonth + '-' + birthDay + '&start=' + positionStart, function (error, response, html) {
     if (!error && response.statusCode == 200) {
@@ -34,13 +31,11 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
           }
         };
         people.push(results)
-        // console.log(people)
       });
       people.forEach(function(element, i){
         let movieInfo = []
         let movieURLInfo= element.mostKnownWork.url
-        let newMovieRating = element.mostKnownWork.rating        // console.log(newMovieRating)
-        // console.log(element)
+        let newMovieRating = element.mostKnownWork.rating
         request(movieURLInfo, function (error, response, html) {
           if(!error && response.statusCode == 200){
             var $ = cheerio.load(html);
@@ -52,6 +47,7 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
                 rating: movieRating,
                 director: movieDirector
               }
+              
               movieInfo.push(movieResults)
             })
             element["mostKnownWork"]["rating"] = movieInfo[0]["rating"]
@@ -64,4 +60,4 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
   })
 }
 
-getBirthDayPeople(02, 02, 1)
+getBirthDayPeople(03, 26, 1)
