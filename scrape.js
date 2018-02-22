@@ -47,7 +47,6 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
                 rating: movieRating,
                 director: movieDirector
               }
-              
               movieInfo.push(movieResults)
             })
             element["mostKnownWork"]["rating"] = movieInfo[0]["rating"]
