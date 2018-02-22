@@ -36,16 +36,16 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
         people.push(results)
         // console.log(people)
       });
-      people.forEach(function(element){
-        // console.log(element)
+      people.forEach(function(element, i){
         let movieInfo = []
         let movieURLInfo= element.mostKnownWork.url
+        let newMovieRating = element.mostKnownWork.rating        // console.log(newMovieRating)
         // console.log(element)
         request(movieURLInfo, function (error, response, html) {
           if(!error && response.statusCode == 200){
             var $ = cheerio.load(html);
             $('#title-overview-widget').each(function(i, element){
-              let movieRating = $(this).find('.imdbRating').children().children().first().text();
+              let movieRating = $(this).find('.imdbRating').children().children().children().text();
               let movieDirector = $(this).find('.credit_summary_item').children().first().next().text().trim().replace(/,/g, '');
 
               let movieResults = {
@@ -54,29 +54,14 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
               }
               movieInfo.push(movieResults)
             })
-            console.log(movieInfo) //works here
+            element["mostKnownWork"]["rating"] = movieInfo[0]["rating"]
+            element["mostKnownWork"]["director"] = movieInfo[0]["director"]
           }
-          // let mostKnownWork = element.mostKnownWork
-          // console.log(movieInfo.movieRating)
-          // let mega = people.concat(movieInfo)
-          // console.log(movieURLInfo)
-          movieInfo.forEach(function(element){
-            if(element.rating === movieURLInfo){
-              people.push(element.rating)
-            }
-            // console.log(element)
-          })
-          // console.log(movieInfo) //works here
-          // console.log(element)
+          console.log(element)
         });
-        // console.log(element)
-        // console.log(mostKnownWork)
-        // console.log(movieInfo)
-        // console.log(element.mostKnownWork)
       })
     }
   })
 }
-//people = getBirthDayPeople
 
 getBirthDayPeople(02, 02, 1)
