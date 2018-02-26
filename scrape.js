@@ -32,23 +32,21 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
         };
         people.push(results)
       });
-      people.forEach(function(element, i){
+      people.forEach(function(element){
         let movieInfo = []
         let movieURLInfo= element.mostKnownWork.url
-        let newMovieRating = element.mostKnownWork.rating
         request(movieURLInfo, function (error, response, html) {
           if(!error && response.statusCode == 200){
             var $ = cheerio.load(html);
-            $('#title-overview-widget').each(function(i, element){
-              let movieRating = $(this).find('.imdbRating').children().children().children().text();
-              let movieDirector = $(this).find('.credit_summary_item').children().first().next().text().trim().replace(/,/g, '');
+            let movieRating = $('.ratings_wrapper').find('.imdbRating').children().children().children().text();
+            let movieDirector = $('.plot_summary').find('.credit_summary_item').children().first().next().text().trim().replace(/,/g, '');
 
-              let movieResults = {
-                rating: movieRating,
-                director: movieDirector
-              }
-              movieInfo.push(movieResults)
-            })
+            let movieResults = {
+              rating: movieRating,
+              director: movieDirector
+            }
+            
+            movieInfo.push(movieResults)
             element["mostKnownWork"]["rating"] = movieInfo[0]["rating"]
             element["mostKnownWork"]["director"] = movieInfo[0]["director"]
           }
@@ -58,5 +56,6 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
     }
   })
 }
-
+//you can simply skip the loop, change your jquery selectors for rating and director to not use $(this)
+//and maybe some slight changes and it should still work
 getBirthDayPeople(03, 26, 1)
