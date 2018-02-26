@@ -45,7 +45,7 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
               rating: movieRating,
               director: movieDirector
             }
-            
+
             movieInfo.push(movieResults)
             element["mostKnownWork"]["rating"] = movieInfo[0]["rating"]
             element["mostKnownWork"]["director"] = movieInfo[0]["director"]
@@ -56,6 +56,4 @@ function getBirthDayPeople(birthMonth, birthDay, positionStart){
     }
   })
 }
-//you can simply skip the loop, change your jquery selectors for rating and director to not use $(this)
-//and maybe some slight changes and it should still work
 getBirthDayPeople(03, 26, 1)
